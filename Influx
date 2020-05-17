@@ -1,0 +1,52 @@
+Steps to Install InfluxDB:
+InfluxDB is a time series-based database system. This means that each data point in the database will contain a timestamp.
+1.	We can add the InfluxDB key by running the following command.
+wget -qO- https://repos.influxdata.com/influxdb.key | sudo apt-key add -
+This command will download the key using wget and pass it directly into the “apt-key” program by using a pipe “|“.
+2.	After the this, I will need to go ahead and add its repository to the sources list. Now enter the following command to add the InfluxDB repository to the sources list.
+Raspbian Buster
+echo "deb https://repos.influxdata.com/debian buster stable" | sudo tee /etc/apt/sources.list.d/influxdb.list
+
+
+3.	With the repository added, run the following command on your Raspberry Pi to update the package list.
+sudo apt update
+4.	Now I have set up the repository, I can now move on to installing the InfluxDB software. This is the command to install InfluxDB to our Raspberry Pi
+sudo apt install influxdb
+5.	With InfluxDB now installed to my Raspberry Pi, now get it to start at boot with these commands. Using systemctl service manager to enable the InfluxDB service file. With the following two commands I am enabling InfluxDB to start at boot on my Raspberry Pi.
+sudo systemctl unmask influxdb
+Unmasks the influxdb service file. Unmasking the service ensures that I can enable and start the service as a masked service is unable to be started.
+sudo systemctl enable influxdb
+The second command enables the influxdb service. This command will tell the service manager to keep an eye on the “influxdb.service” file and setup the service based on its contents.
+6.	Now proceed to start up InfluxDB on our Raspberry Pi. Run the following command. The service manager will then start up the service and begin monitoring it.
+sudo systemctl start influxdb
+
+7.	The next step is to add extra authentication to InfluxDB installation on the Raspberry Pi. Without authentication, anyone could interact with database. To get started, I need to first create a user to act as our admin. To create this user, I must first load up the InfluxDB CLI tool by running the following command.
+influx
+8.	Within this interface, I can create a user that will have full access to the database. This user will act as admin account. To create this admin user, run the following command within InfluxDB’s CLI tool.
+CREATE USER admin WITH PASSWORD '<password>' WITH ALL PRIVILEGES
+This command will create a new user called “admin” with your chosen password and grant it all privileges and then exit. 
+9.	Next job is to modify the InfluxDB config file to enable authentication.
+sudo nano /etc/influxdb/influxdb.conf
+10.	Within this file, use CTRL + W to find the [HTTP] section and add the following options underneath that section.
+Find - [HTTP]
+Add Below 
+auth-enabled = true
+pprof-enabled = true
+pprof-auth-enabled = true
+ping-auth-enabled = true
+Once added, save the file by pressing CTRL + X, then Y, followed by ENTER.
+11.	Restarting the service will ensure that our configuration changes are read in.
+sudo systemctl restart influxdb
+12.	Now create a database called “internetspeed“.
+CREATE DATABASE internetspeed
+13.	Our next step is to create a user called “speedmonitor” that we will be using to interact with our database and the password to protect it
+
+CREATE USER "speedmonitor" WITH PASSWORD 'password'
+
+14.	Now assign the new “speedmonitor” user all privileges to “internetspeed” database.
+
+GRANT ALL ON "internetspeed" to "speedmonitor"
+
+15.	With the database created, quit out of the tool by using the following command.
+
+quit
