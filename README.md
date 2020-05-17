@@ -26,4 +26,4 @@ import subprocess: The subprocess library is essential to this script, as I requ
 
 import time: Utilizing the time library to record both the date and time for each call to the speedtest-cli. This library is what will allows to track our speed over a length of time.
 
-2.data.py  In this, I have import the “InfluxDBClient” client, which is used to interact with our InfluxDB server.
+2.data.py - In this, I have import the “InfluxDBClient” client, which is used to interact with our InfluxDB server.
