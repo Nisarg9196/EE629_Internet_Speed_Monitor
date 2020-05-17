@@ -14,3 +14,16 @@ Spring 2020 – EE629 Final Project
 •	Then I have created a folder on Google drive to store my speedtest.csv data on cloud
 
 •	Last, I have automated my pi by writing a simple bash script. This script will be called by crontab to run routinely
+
+There are two python files which are the main instructions for this project:
+1.speedtest.py - 
+
+import os: I have used os library to interact with the operating system itself. 
+
+import re: The re library to easily do regular expressions by providing a library for handling pattern searches.This gives the values  out of the data from speedtest-cli. 
+
+import subprocess: The subprocess library is essential to this script, as I require it to be able to call another python script. For this, I will be using the subprocess library to launch up the speedtest-cli script and retrieve the values returned by it.
+
+import time: Utilizing the time library to record both the date and time for each call to the speedtest-cli. This library is what will allows to track our speed over a length of time.
+
+2.data.py  In this, I have import the “InfluxDBClient” client, which is used to interact with our InfluxDB server.
