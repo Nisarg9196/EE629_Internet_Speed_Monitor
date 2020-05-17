@@ -1,0 +1,22 @@
+Steps to Install Grafana and its use in the Project:
+1.	Run the following command to download Grafana in the Raspberry Pi.
+
+wget https://dl.grafana.com/oss/release/grafana-rpi_6.6.1_armhf.deb
+sudo dpkg -i grafana-rpi_6.6.1_armhf.deb
+
+The first command downloads the relevant Grafana Debian package file to your Raspberry Pi. The second makes use of the “dpkg” package manager to install the package that we just downloaded to the operating system.
+
+2.	To enable Grafana to start at boot, all we need to do is run the following command.
+
+sudo systemctl enable grafana-server
+
+This command will tell the systems service manager to enable the service file called “grafana-server.service”. The service manager will use this file as a guide on how to deal with the Grafana server.
+
+3.	Finally, start up the Grafana server software by running the command below in the Pi’s terminal.
+
+sudo systemctl start grafana-server
+
+4.	Now to automate it the script, the easiest way is to make use of the crontab. I modified the crontab by running the following command on the terminal. Then select nano edit which is recommend and easy is use
+sudo crontab -e
+5.	Within this file, add the following cronjob to the bottom. This cronjob will run every 30 minutes. The crontab will automatically be updated and will begin to run the script immediately 
+*/30 * * * * python3 /home/pi/speedtest.py
